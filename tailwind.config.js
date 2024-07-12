@@ -8,7 +8,10 @@ module.exports = {
       },
       container:{
         'padding':'25px'
-      }
+      },
+      colors:{
+        'my-color':"rgba(217, 217, 217, 0.3)"
+      },
     },
   },
   plugins: [],
