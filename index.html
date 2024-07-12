@@ -11,7 +11,7 @@
     <!-- header and navbar -->
     <header class="flex justify-between flex-row-reverse">
       <!-- profile and night mode -->
-      <div class="mr-6 my-7 flex flex-row-reverse">
+      <div class="mr-6 my-7 flex flex-row-reverse gap-4">
         <!-- profile -->
         <div>
           <img
@@ -59,7 +59,7 @@
         <input
           type="search"
           placeholder="search city"
-          class="bg-[#1E1E1E] py-4 pl-16 relative rounded-[10px]"
+          class="bg-[#1E1E1E] py-4 pl-16 relative rounded-[10px] outline-none"
         />
         <img
           src="./assets/img/svg/search-icon.svg"
@@ -84,6 +84,114 @@
       <!--end of location icon and name -->
     </header>
     <!--end of header and navbar -->
+    <div class="grid grid-cols-my-columns">
+      <!--left column -->
+      <!-- today , tomorrow, next 7days section -->
+      <div class="text-white flex justify-between container">
+        <div class="flex gap-4">
+          <p id="today" class="text-[#818085]">Today</p>
+          <p id="tomorrow" class="text-[#818085]">Tomorrow</p>
+          <p id="next7days">Next 7days</p>
+        </div>
+        <div>
+          <p>Forecast</p>
+        </div>
+      </div>
+      <!--end of today , tomorrow, next 7days section -->
+      <!--end of left column -->
+      <!-- right column -->
+      <!-- chance of rain -->
+      <div>
+        <p class="text-white">Chance Of Rain</p>
+      </div>
+      <!-- chance of rain -->
+      <!--end of right column -->
+    </div>
+    <div class="flex gap-10 container py-8">
+           <!-- weather detail box -->
+     <div class="bg-[#BBD7EC] text-black rounded-3xl">
+      <div class="bg-[#AECADF] flex py-5 justify-between px-4 rounded-tl-3xl rounded-tr-3xl">
+        <h1 class="font-semibold">Friday</h1>
+        <h1 class="font-semibold">11:45AM</h1>
+      </div>
+      <div class="flex justify-between px-4 items-center text-3xl py-3">
+        <p class="font-semibold">16°</p>
+        <img
+          src="./assets/img/svg/Sunnny Windy Icon in detail box.svg"
+          alt=""
+        />
+      </div>
+      <div class="px-4 text-xs">
+        <p class="text-[#4F5658]">Real Feel <span class="font-semibold text-black">18°</span></p>
+      </div>
+      <div class="flex justify-between px-4 text-xs gap-6">
+        <p class="text-[#4F5658]">Wind N-E. <span class="font-semibold text-black">6-7km/h</span></p>
+        <p class="text-[#4F5658]">Sunrise <span class="font-semibold text-black">5:30AM</span></p>
+      </div>
+      <div class="flex justify-between px-4 text-xs mr-5">
+        <p class="text-[#4F5658]">Pressure <span class="font-semibold text-black">100MB</span></p>
+        <p class="text-[#4F5658]">Sunset <span class="font-semibold text-black">6:45</span></p>
+      </div>
+      <div class="px-4 text-xs pb-3">
+        <p class="text-[#4F5658]">Humidity <span class="font-semibold text-black">51%</span></p>
+      </div>
+    </div>
+    <!--end of weather detail box -->
+    <!-- next days weather -->
+     <div class="flex gap-10 text-white">
+      <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">SAT</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/Rainy-Sunny (2) 1.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">10°</p>
+       </div>
+
+       <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">SUN</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/Sunny 1.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">15°</p>
+       </div>
+
+       <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">MON</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/Sunnyclouds.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">11°</p>
+       </div>
+
+       <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">TUE</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/Rainy (2) 2.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">10°</p>
+       </div>
+
+       <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">WED</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/RAINY-SUNNY 1.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">12°</p>
+       </div>
+
+       <div class="bg-[#1B1B1D] flex flex-col items-center justify-evenly rounded-[30px]">
+        <p class="text-[16px]">THU</p>
+        <span class="border-t-2 border-[#39393A] w-full"></span>
+        <img src="./assets/img/svg/Windy 1.svg" class="px-6" alt="">
+        <p class="font-semibold text-[32px]">10°</p>
+       </div>
+     </div>
+    <!--end of next days weather -->
+    </div>
+    <!-- todays overview -->
+     <div class="container grid grid-cols-my-columns ">
+      <h1 class="text-white">Today's Overview</h1>
+      <div class="text-white flex justify-between">
+        <p>Other Cities</p>
+        <span class="text-[#FFFFFF]">See All</span>
+      </div>
+     </div>
+    <!--end of todays overview -->
     <script src="./assets/js/input.js"></script>
   </body>
 </html>
