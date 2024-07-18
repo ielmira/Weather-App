@@ -66,3 +66,56 @@ const option = {
 chart.setOption(option);
 
 // gauge chart
+const option1 = {
+  series:[{
+    type:'gauge',
+    startAngle:180,
+    endAngle:0,
+    min:0,
+    max:12,
+    splitNumber:4,
+    axisTick:{
+      show:false
+    },
+    itemStyle:{
+      color:'#2AA1FA'
+    },
+    progress:{
+      show:true,
+      width:18,
+    },
+    axisLine: {
+      lineStyle: {
+        width: 7
+      }
+    },
+    detail: {
+      width: '60%',
+      lineHeight: 100,
+      height: 70,
+      borderRadius: 8,
+      formatter: function (value) {
+        return value + `{unit|UV}`;
+      },
+      rich: {
+        value: {
+          fontSize: 50,
+          fontWeight: 'bolder',
+          color: '#777'
+        },
+        unit: {
+          fontSize: 20,
+          color: '#999',
+          padding: [0, 0, -20, 10]
+        }
+      }
+    },
+    data: [
+      {
+        value: 5.50
+      }
+    ]
+ } ]
+}
+
+gaugeChart.setOption(option1);
