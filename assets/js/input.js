@@ -75,7 +75,11 @@ const option1 = {
     max:12,
     splitNumber:4,
     axisTick:{
-      show:false
+      show:false,
+    },
+    splitLine:{
+      show:false,
+      distance:-13,
     },
     pointer: {
       show:false
@@ -94,28 +98,18 @@ const option1 = {
     },
     detail: {
       width: '100%',
-      lineHeight:200,
-      height: 70,
+      lineHeight:100,
+      height:70,
       color: '#FFFFFF',
+      offsetCenter: [0, '100%'],
       formatter: function (value) {
-        return value.toFixed(2) + ` UV`;
+        return value.toFixed(2) + ' UV';
       },
-      rich: {
-        value: {
-          fontSize: 50,
-          fontWeight: 'bolder',
-          color: '#777'
-        },
-        unit: {
-          fontSize: 20,
-          color: '#999',
-          padding: [0, 0, -20, 10]
-        }
-      }
+      rich: {}
     },
     data: [
       {
-        value: 5.50
+        value: 5.50,
       }
     ]
  } ]
