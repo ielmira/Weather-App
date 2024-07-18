@@ -7,8 +7,11 @@ const option = {
     containLabel: true,
   },
   xAxis: {
-    axisLine:{
+    axisTick: {
       show:false
+      },
+    axisLine:{
+      show:false,
     },
     data: ["10AM", "11AM", "12AM", "01PM", "02PM", "03PM"],
   },
