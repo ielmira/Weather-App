@@ -77,6 +77,9 @@ const option1 = {
     axisTick:{
       show:false
     },
+    pointer: {
+      show:false
+    },
     itemStyle:{
       color:'#2AA1FA'
     },
@@ -90,12 +93,12 @@ const option1 = {
       }
     },
     detail: {
-      width: '60%',
-      lineHeight: 100,
+      width: '100%',
+      lineHeight:200,
       height: 70,
-      borderRadius: 8,
+      color: '#FFFFFF',
       formatter: function (value) {
-        return value + `{unit|UV}`;
+        return value.toFixed(2) + ` UV`;
       },
       rich: {
         value: {
