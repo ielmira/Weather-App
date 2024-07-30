@@ -756,6 +756,10 @@ video {
   margin-bottom: 1.75rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .ml-6 {
   margin-left: 1.5rem;
 }
@@ -895,8 +899,8 @@ video {
   height: 50%;
 }
 
-.h-\[55\%\] {
-  height: 55%;
+.h-\[50px\] {
+  height: 50px;
 }
 
 .h-\[92\%\] {
@@ -912,6 +916,10 @@ video {
   height: 100%;
 }
 
+.h-\[60px\] {
+  height: 60px;
+}
+
 .w-1 {
   width: 0.25rem;
 }
@@ -924,8 +932,16 @@ video {
   width: 25%;
 }
 
+.w-\[264px\] {
+  width: 264px;
+}
+
 .w-\[35\%\] {
   width: 35%;
+}
+
+.w-\[95px\] {
+  width: 95px;
 }
 
 .w-\[this-is\\\\\] {
@@ -947,6 +963,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[100px\] {
+  width: 100px;
 }
 
 .flex-shrink {
@@ -1509,6 +1529,14 @@ video {
 
 .gap-7 {
   gap: 1.75rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.gap-9 {
+  gap: 2.25rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -2156,9 +2184,19 @@ video {
   padding-right: 1rem;
 }
 
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .py-3 {
@@ -2205,6 +2243,10 @@ video {
 
 .pl-8 {
   padding-left: 2rem;
+}
+
+.pr-3 {
+  padding-right: 0.75rem;
 }
 
 .text-left {
@@ -2379,6 +2421,11 @@ video {
 .stacked-fractions {
   --tw-numeric-fraction: stacked-fractions;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
+}
+
+.text-\[\#1E1E1E\] {
+  --tw-text-opacity: 1;
+  color: rgb(30 30 30 / var(--tw-text-opacity));
 }
 
 .text-\[\#336699\]\/\[\.35\] {
