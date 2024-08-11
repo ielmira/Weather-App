@@ -1,5 +1,7 @@
 const chart = echarts.init(document.getElementById("chart"));
 const gaugeChart = echarts.init(document.getElementById("gaugeChart"));
+document.documentElement.classList.add("dark");
+
 // bar chart
 const barChartOption = {
   grid: {
@@ -173,7 +175,6 @@ function createBarChartData(data) {
 
   return finalList;
 }
-
 const apikey = "e75895e9a584af2eeb49e3355b5978cc";
 const searchCity = document.querySelector(".searchCity");
 const searchBtn = document.querySelector(".searchBtn");
@@ -199,7 +200,7 @@ async function todaySetWeather(city) {
   // );
   try {
     const data = await fetchData(
-      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}`,
+      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}`
     );
     let sunrise = data.sys.sunrise;
     let sunset = data.sys.sunset;
@@ -232,8 +233,9 @@ async function todaySetWeather(city) {
       `&nbsp;` + `${hour2}:${minute2}`;
     document.querySelector(".dayName").innerHTML =
       moment(dayName).format("dddd");
-    document.querySelector(".timeLine").innerHTML =
-      `${todayHour}:${todayMinute} AM`;
+    document.querySelector(
+      ".timeLine"
+    ).innerHTML = `${todayHour}:${todayMinute} AM`;
   } catch (error) {
     console.log("There was an error", error);
     modal2.classList.replace("hidden", "fixed");
@@ -262,48 +264,49 @@ async function nextSevenDayWeather(city) {
   try {
     modal.classList.replace("hidden", "fixed");
     const response = await fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/next7days?unitGroup=uk&key=FA8C5256869T2PXE7FDXKV6XV`,
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/next7days?unitGroup=uk&key=FA8C5256869T2PXE7FDXKV6XV`
     );
     let data = await response.json();
 
     const weather = document.querySelector(".weather");
     weather.classList.add("flex", "gap-9", "text-white");
+    console.log("xxxxxxxxxxxxxx");
+    console.log(weather.firstElementChild);
+    let bgColor;
+    if (document.documentElement.classList.contains("dark")) {
+      bgColor = "bg-primary";
+    } else {
+      bgColor = "bg-lightMode";
+    }
+
     weather.innerHTML = "";
     // console.log(weather.innerHTML);
     for (let i = 2; i <= 7; i++) {
       let dt = data.days[i].datetimeEpoch;
       let getDate = new Date(dt * 1000);
       let nextDayName = moment(getDate).format("ddd");
-      // console.log(getDate);
-      // console.log(nextDayName);
+
       const bgLight = document.querySelectorAll(".bg-lightMode");
+
       const nextDiv = document.createElement("div");
       const weatherChild = weather.childNodes;
 
-      if(body.classList.contains("bg-[#c8d6e5]")){
-        nextDiv.classList.add("bg-lightMode");
-      }
-
-
-
-
-
-      // console.log("FIRST: ",weatherFirst.contains("bg-primary"));
-
-      // const hasPrimary = weather.firstChild.contains("bg-primary");
-      // const bgColor = hasPrimary?"bg-primary":"bg-lightMode";
-      //  console.log("HAS PRIMARY : ",hasPrimary);
-
-
       nextDiv.classList.add(
         // bgColor,
-        "bg-primary",
+        // "bg-lightMode dark:bg-primary",
+
         "flex",
         "flex-col",
         "items-center",
         "justify-evenly",
         "rounded-[30px]",
+        "js-theme-dependent"
       );
+      if (document.documentElement.classList.contains("dark")) {
+        nextDiv.classList.add("bg-primary");
+      } else {
+        nextDiv.classList.add("bg-lightMode");
+      }
       const dayTitle = document.createElement("p");
       dayTitle.classList.add("text-[16px]");
       const border = document.createElement("span");
@@ -374,7 +377,7 @@ window.onload = async function cityBoxes() {
   try {
     // throw new Error("ERROR");/
     const data = await fetchData(
-      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${cityName}`,
+      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${cityName}`
     );
     const modal = document.querySelector(".modal");
     modal.classList.replace("hidden", "fixed");
@@ -439,22 +442,24 @@ const themeSwitch = document.getElementById("themeSwitch");
 const body = document.querySelector(".body");
 const bgPrimary = document.querySelectorAll(".bg-primary");
 const bgInput = document.querySelectorAll(".bg-input");
-console.log("input", bgInput);
-
+const weatherElement = document.querySelectorAll(".weather");
+function updateThemeForElements() {
+  const elements = document.querySelectorAll('.js-theme-dependent'); // همه المنت‌هایی که باید تم‌شان آپدیت شود
+  elements.forEach(element => {
+    if (document.documentElement.classList.contains("dark")) {
+      element.classList.remove("bg-lightMode");
+      element.classList.add("bg-primary");
+    } else {
+      element.classList.remove("bg-primary");
+      element.classList.add("bg-lightMode");
+    }
+  });
+}
 themeSwitch.addEventListener("change", (event) => {
-  body.classList.toggle("bg-[#c8d6e5]");
-  for (let i = 0; i < bgPrimary.length; i++) {
-    if (event.target.checked) {
-      bgPrimary[i].classList.replace("bg-primary", "bg-lightMode");
-    } else {
-      bgPrimary[i].classList.replace("bg-lightMode", "bg-primary");
-    }
+  if (event.target.checked) {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
   }
-  for (i = 0; i < bgInput.length; i++) {
-    if (event.target.checked) {
-      bgInput[i].classList.replace("bg-input", "bg-lightMode");
-    } else {
-      bgInput[i].classList.replace("bg-lightMode", "bg-input");
-    }
-  }
+  updateThemeForElements(); 
 });

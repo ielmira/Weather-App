@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'selector',
+
   content: ["./**/*.{html,js}"],
   theme: {
     extend: {
@@ -11,9 +13,9 @@ module.exports = {
       },
       colors: {
         "my-color": "rgba(217, 217, 217, 0.3)",
-        "primary":'#1B1B1D',
-        "lightMode":'#8395a7',
-        "input":'#1E1E1E'
+        primary: "#1B1B1D",
+        lightMode: "#8395a7",
+        input: "#1E1E1E",
       },
     },
   },
