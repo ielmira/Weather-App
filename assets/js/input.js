@@ -23,22 +23,22 @@ const barChartOption = {
         color: "#39393A",
       },
     },
-    min: 0,
-    max: 30,
+    // min: 0,
+    // max: 100,
     axisLabel: {
       formatter: function (data) {
         console.log(data);
-        if (data === 20) {
+        if (data === 0) {
           return "Sunny";
-        } else if (data === 30) {
+        } else if (data === 65) {
           return "Rainy";
-        } else if (data === 10) {
+        } else if (data === 30) {
           return "Heavy";
         } else {
           return "";
         }
       },
-      customValues: [30, 10, 20],
+      customValues: [0, 30, 65],
     },
   },
   series: [
@@ -64,6 +64,7 @@ const barChartOption = {
   ],
 };
 chart.setOption(barChartOption);
+
 // gauge chart
 const option1 = {
   series: [
@@ -141,10 +142,10 @@ function createBarChartData(data) {
   const minutes = now.getMinutes();
   now.setHours(hours, 0, 0);
   const nextHourTimeStamp = moment(now.getTime() + 60 * 60 * 1000).unix();
-  console.log(`today is day ${day} and the time is ${hours}:${minutes}`);
-  console.log(nextHourTimeStamp);
+  // console.log("rrrrr", nextHourTimeStamp);
+  // console.log(`today is day ${day} and the time is ${hours}:${minutes}`);
   let todayHoursList = data.days[0];
-  console.log(todayHoursList);
+  // console.log(todayHoursList);
 
   let finalList = [];
 
@@ -153,34 +154,33 @@ function createBarChartData(data) {
   });
 
   if (toadyFilterResult.length >= 6) {
-    finalList = toadyFilterResult.slice(0 , 6).map((item) => {
+    finalList = toadyFilterResult.slice(0, 6).map((item) => {
       return {
-        time : item.datetime,
-        temp : item.temp,
-      }
-    })
-
+        time: item.datetime,
+        precipprob: item.precipprob,
+      };
+    });
   } else {
     const lessHours = 6 - toadyFilterResult.length;
     const tommarowHoursList = data.days[1].hours.slice(0, lessHours);
     finalList = toadyFilterResult.concat(tommarowHoursList).map((item) => {
       return {
         time: item.datetime,
-        temp: item.temp,
+        precipprob: item.precipprob,
       };
     });
-
   }
 
   return finalList;
-
 }
-
-
 
 const apikey = "e75895e9a584af2eeb49e3355b5978cc";
 const searchCity = document.querySelector(".searchCity");
 const searchBtn = document.querySelector(".searchBtn");
+const modal2 = document.querySelector(".modal2");
+const reload = document.querySelector(".reload");
+// console.log("reload:");
+// console.log(reload);
 
 async function fetchData(url) {
   if (url == "") {
@@ -194,93 +194,267 @@ async function fetchData(url) {
 }
 
 async function todaySetWeather(city) {
-  const data = await fetchData(
-    `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}`,
-  );
-
-  let sunrise = data.sys.sunrise;
-  let sunset = data.sys.sunset;
-  let sunriseDate = new Date(sunrise * 1000);
-  let sunsetDate = new Date(sunset * 1000);
-  let day = sunriseDate.getDay();
-  let hour = sunriseDate.getHours();
-  let hour2 = sunsetDate.getHours();
-  let minute = sunriseDate.getMinutes();
-  let minute2 = sunsetDate.getMinutes();
-  console.log(data);
-  document.querySelector(".todayTemp").innerHTML =
-    Math.round(data.main.temp) + "°";
-  document.querySelector(".cityName").innerHTML = data.name;
-  document.querySelector(".Humidity").innerHTML = data.main.humidity + "%";
-  document.querySelector(".realFeel").innerHTML =
-    Math.round(data.main.feels_like) + "°";
-  document.querySelector(".pressure").innerHTML = data.main.pressure + "MB";
-  document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
-  document.querySelector(".sunrise").innerHTML = `${hour}:${minute}`;
-  document.querySelector(".sunset").innerHTML =
-    `&nbsp;` + `${hour2}:${minute2}`;
+  // const data = await fetchData(
+  //   `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}`,
+  // );
+  try {
+    const data = await fetchData(
+      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}`,
+    );
+    let sunrise = data.sys.sunrise;
+    let sunset = data.sys.sunset;
+    let sunriseDate = new Date(sunrise * 1000);
+    let sunsetDate = new Date(sunset * 1000);
+    let today = data.dt;
+    let dayName = new Date(today * 1000);
+    let todayHour = dayName.getHours();
+    let todayMinute = dayName.getMinutes();
+    let day = sunriseDate.getDay();
+    let hour = sunriseDate.getHours();
+    let hour2 = sunsetDate.getHours();
+    let minute = sunriseDate.getMinutes();
+    let minute2 = sunsetDate.getMinutes();
+    console.log(data);
+    document.querySelector(".todayTemp").innerHTML =
+      Math.round(data.main.temp) + "°";
+    document.querySelector(".cityName").innerHTML = data.name;
+    document.querySelector(".Humidity").innerHTML = data.main.humidity + "%";
+    document.querySelector(".realFeel").innerHTML =
+      Math.round(data.main.feels_like) + "°";
+    document.querySelector(".pressure").innerHTML = data.main.pressure + "MB";
+    document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+    document.querySelector(".sunrise").innerHTML = `${hour}:${minute}`;
+    document.querySelector(".humidityPercent").innerHTML =
+      data.main.humidity + "%";
+    document.querySelector(".visibility").innerHTML =
+      data.visibility * 0.001 + "km";
+    document.querySelector(".sunset").innerHTML =
+      `&nbsp;` + `${hour2}:${minute2}`;
+    document.querySelector(".dayName").innerHTML =
+      moment(dayName).format("dddd");
+    document.querySelector(".timeLine").innerHTML =
+      `${todayHour}:${todayMinute} AM`;
+  } catch (error) {
+    console.log("There was an error", error);
+    modal2.classList.replace("hidden", "fixed");
+    reload.addEventListener("click", () => {
+      todaySetWeather(city);
+    });
+  }
 }
 
 searchBtn.addEventListener("click", async () => {
-  await todaySetWeather(searchCity.value);
-  const  data = await nextSevenDayWeather(searchCity.value);
-  const finalList = createBarChartData(data);
-  console.log(`FINAL LIST : `,finalList.toString());
-  const barChartTime = finalList.map((item) => {
-    return {
-      time: item.datetime,
-    }
-  })
-  console.log(barChartTime)
+  const modal = document.querySelector(".modal");
+  try {
+    modal.classList.replace("hidden", "fixed");
+    await todaySetWeather(searchCity.value);
+    const data = await nextSevenDayWeather(searchCity.value);
+    setDataVar(data);
+    modal.classList.replace("fixed", "hidden");
+  } catch (error) {
+    modal2.classList.replace("hidden", "fixed");
+    modal.classList.replace("fixed", "hidden");
+  }
 });
 
 async function nextSevenDayWeather(city) {
-  const response = await fetch(
-    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/next7days?unitGroup=uk&key=FA8C5256869T2PXE7FDXKV6XV`,
-  );
-  let data = await response.json();
-
-  const weather = document.querySelector(".weather");
-  weather.classList.add("flex", "gap-9", "text-white");
-  weather.innerHTML = "";
-  console.log(weather.innerHTML);
-
-  for (let i = 0; i <= 5; i++) {
-    let dt = data.days[i].datetimeEpoch;
-    let getDate = new Date(dt * 1000);
-    let nextDayName = moment(getDate).format("ddd");
-    console.log(getDate);
-    console.log(nextDayName);
-
-    const nextDiv = document.createElement("div");
-    nextDiv.classList.add(
-      "bg-[#1B1B1D]",
-      "flex",
-      "flex-col",
-      "items-center",
-      "justify-evenly",
-      "rounded-[30px]",
+  const modal = document.querySelector(".modal");
+  try {
+    modal.classList.replace("hidden", "fixed");
+    const response = await fetch(
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/next7days?unitGroup=uk&key=FA8C5256869T2PXE7FDXKV6XV`,
     );
-    const dayTitle = document.createElement("p");
-    dayTitle.classList.add("text-[16px]");
-    const border = document.createElement("span");
-    border.classList.add("border-t-2", "border-[#39393A]", "w-full");
-    dayTitle.innerHTML = nextDayName.toUpperCase();
+    let data = await response.json();
 
-    let icon = document.createElement("img");
-    icon.classList.add("px-4", "w-[100px]", "h-[60px]");
-    let iconImg = data.days[i].icon;
-    console.log("iconImg");
-    console.log(iconImg);
-    icon.setAttribute("src", `./assets/img/animated/${iconImg}.svg`);
-    let nextDaysTemp = document.createElement("p");
-    nextDaysTemp.classList.add("font-semibold", "text-[32px]");
-    nextDaysTemp.innerHTML = Math.round(data.days[i].feelslike) + "°";
-    weather.appendChild(nextDiv);
-    nextDiv.appendChild(dayTitle);
-    nextDiv.appendChild(border);
-    nextDiv.appendChild(icon);
-    nextDiv.appendChild(nextDaysTemp);
+    const weather = document.querySelector(".weather");
+    weather.classList.add("flex", "gap-9", "text-white");
+    weather.innerHTML = "";
+    // console.log(weather.innerHTML);
+    for (let i = 2; i <= 7; i++) {
+      let dt = data.days[i].datetimeEpoch;
+      let getDate = new Date(dt * 1000);
+      let nextDayName = moment(getDate).format("ddd");
+      // console.log(getDate);
+      // console.log(nextDayName);
+      const bgLight = document.querySelectorAll(".bg-lightMode");
+      const nextDiv = document.createElement("div");
+      const weatherChild = weather.childNodes;
+
+      if(body.classList.contains("bg-[#c8d6e5]")){
+        nextDiv.classList.add("bg-lightMode");
+      }
+
+
+
+
+
+      // console.log("FIRST: ",weatherFirst.contains("bg-primary"));
+
+      // const hasPrimary = weather.firstChild.contains("bg-primary");
+      // const bgColor = hasPrimary?"bg-primary":"bg-lightMode";
+      //  console.log("HAS PRIMARY : ",hasPrimary);
+
+
+      nextDiv.classList.add(
+        // bgColor,
+        "bg-primary",
+        "flex",
+        "flex-col",
+        "items-center",
+        "justify-evenly",
+        "rounded-[30px]",
+      );
+      const dayTitle = document.createElement("p");
+      dayTitle.classList.add("text-[16px]");
+      const border = document.createElement("span");
+      border.classList.add("border-t-2", "border-[#39393A]", "w-full");
+      dayTitle.innerHTML = nextDayName.toUpperCase();
+
+      let icon = document.createElement("img");
+      icon.classList.add("px-4", "w-[100px]", "h-[60px]");
+      let iconImg = data.days[i].icon;
+      icon.setAttribute("src", `./assets/img/animated/${iconImg}.svg`);
+      let nextDaysTemp = document.createElement("p");
+      nextDaysTemp.classList.add("font-semibold", "text-[32px]");
+      nextDaysTemp.innerHTML = Math.round(data.days[i].feelslike) + "°";
+      weather.appendChild(nextDiv);
+      nextDiv.appendChild(dayTitle);
+      nextDiv.appendChild(border);
+      nextDiv.appendChild(icon);
+      nextDiv.appendChild(nextDaysTemp);
+    }
+    return data;
+  } catch (error) {
+    // console.log("There was an error", error);
+    modal2.classList.replace("hidden", "fixed");
+    modal.classList.replace("fixed", "hidden");
+    reload.addEventListener("click", () => {
+      nextSevenDayWeather(city);
+    });
   }
-  return data ;
 }
+
+function setDataVar(data) {
+  const uvData = data.days[0].uvindex;
+  option1.series[0].data[0].value = uvData;
+  gaugeChart.setOption(option1);
+  // console.log("uvData", uvData);
+  const finalList = createBarChartData(data);
+  // console.log(`FINAL LIST : `, finalList.toString());
+  // console.log("finallllllllll", finalList);
+  const barChartTime = finalList.map((item) => {
+    return moment(item.time.substring(0, 2), "hh A").format("hh A");
+  });
+  // console.log("yeeeeeeeessssssss", moment(barChartTime, "hh A").format("hh A"));
+  const barChartPrecip = finalList.map((item) => {
+    return item.precipprob;
+  });
+  barChartOption.series[0].data = barChartPrecip;
+  barChartOption.series[1].data = barChartPrecip;
+
+  barChartOption.xAxis.data = barChartTime;
+  chart.setOption(barChartOption);
+
+  // chart.setOption(barChartOption);
+  // console.log("timeeeeeeeeee", barChartOption.data);
+  // console.log(barChartPrecip);
+}
+
+const otherCitiesBoxes = document.querySelectorAll(".otherCitiesBoxes");
+const cityWeather = document.querySelectorAll(".cityWeather");
+const cityNameOther = document.querySelectorAll(".cityNameOther");
+const newIcon = document.querySelectorAll(".newIcon");
+
+window.onload = async function cityBoxes() {
+  const modal = document.querySelector(".modal");
+  modal.classList.replace("hidden", "fixed");
+  let i = 0;
+  const cityName =
+    otherCitiesBoxes[i].querySelector(".cityNameOther").innerHTML;
+  try {
+    // throw new Error("ERROR");/
+    const data = await fetchData(
+      `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${cityName}`,
+    );
+    const modal = document.querySelector(".modal");
+    modal.classList.replace("hidden", "fixed");
+    for (let i = 0; i < otherCitiesBoxes.length; i++) {
+      setWeatherIcon(newIcon[i], cityWeather[i].innerHTML);
+
+      // console.log(cityWeather[i]);
+      cityWeather[i].innerHTML = data.weather[0].description;
+
+      // console.log("cityyyyyyyy", cityWeather[i].innerHTML);
+    }
+
+    modal.classList.replace("fixed", "hidden");
+    for (let i = 0; i < otherCitiesBoxes.length; i++) {
+      setWeatherIcon(newIcon[i], cityWeather[i].innerHTML);
+      otherCitiesBoxes[i].addEventListener("click", async () => {
+        const modal = document.querySelector(".modal");
+        modal.classList.replace("hidden", "fixed");
+        await todaySetWeather(cityNameOther[i].innerHTML);
+        const data = await nextSevenDayWeather(cityNameOther[i].innerHTML);
+        setDataVar(data);
+        modal.classList.replace("fixed", "hidden");
+      });
+    }
+  } catch (error) {
+    console.log("There was an error", error);
+    modal2.classList.replace("hidden", "fixed");
+    modal.classList.replace("fixed", "hidden");
+
+    reload.addEventListener("click", () => {
+      // console.log("CLICKED");
+      cityBoxes();
+    });
+  }
+};
+
+function setWeatherIcon(element, iconName) {
+  let icon = iconName;
+
+  if (icon === "cloudy") {
+    icon = "cloudy-day-1";
+  } else if (icon === "Windy") {
+    icon = "thunder";
+  } else if (icon === "Mostly Sunny") {
+    icon = "clear-day";
+  } else if (icon === "broken clouds") {
+    icon = "broken clouds";
+  } else if (icon === "clear sky") {
+    icon = "clear sky";
+  } else if (icon === "overcast clouds") {
+    icon = "overcast clouds";
+  } else {
+    icon = "overcast clouds";
+  }
+
+  console.log("icon:" + icon);
+
+  element.setAttribute("src", `./assets/img/animated - Copy/${icon}.svg`);
+}
+
+const themeSwitch = document.getElementById("themeSwitch");
+const body = document.querySelector(".body");
+const bgPrimary = document.querySelectorAll(".bg-primary");
+const bgInput = document.querySelectorAll(".bg-input");
+console.log("input", bgInput);
+
+themeSwitch.addEventListener("change", (event) => {
+  body.classList.toggle("bg-[#c8d6e5]");
+  for (let i = 0; i < bgPrimary.length; i++) {
+    if (event.target.checked) {
+      bgPrimary[i].classList.replace("bg-primary", "bg-lightMode");
+    } else {
+      bgPrimary[i].classList.replace("bg-lightMode", "bg-primary");
+    }
+  }
+  for (i = 0; i < bgInput.length; i++) {
+    if (event.target.checked) {
+      bgInput[i].classList.replace("bg-input", "bg-lightMode");
+    } else {
+      bgInput[i].classList.replace("bg-lightMode", "bg-input");
+    }
+  }
+});

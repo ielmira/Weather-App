@@ -11,6 +11,9 @@ module.exports = {
       },
       colors: {
         "my-color": "rgba(217, 217, 217, 0.3)",
+        "primary":'#1B1B1D',
+        "lightMode":'#8395a7',
+        "input":'#1E1E1E'
       },
     },
   },
